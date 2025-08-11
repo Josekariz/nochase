@@ -1,0 +1,19 @@
+/* app/globals.css */
+
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #1A73E8;
+  --color-brand-accent: #E84545;
+
+  /* New custom colors for card backgrounds */
+  --color-card-blue: #EBF5F9;
+  --color-card-purple: #F3F1FA;
+  --color-card-pink: #F8E8F5;
+
+  --spacing-section: 4rem;
+  --border-radius-card: 0.75rem;
+  --max-width-page: 72rem;
+}
+
+/* Any other global styles */
