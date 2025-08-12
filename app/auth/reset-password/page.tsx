@@ -17,17 +17,6 @@ export default function ResetPasswordPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // Check if we have the necessary parameters
-  useEffect(() => {
-    const hasParams = searchParams.has('type') && 
-                      (searchParams.has('access_token') || searchParams.has('refresh_token'))
-    
-    if (!hasParams) {
-      // If we don't have the right params, redirect to sign in page
-      router.push('/auth')
-    }
-  }, [searchParams, router])
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)

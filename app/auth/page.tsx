@@ -30,9 +30,15 @@ export default function AuthPage() {
       const type = searchParams.get('type')
       
       if ((accessToken || refreshToken) && type) {
-        // The URL parameters indicate this is a callback from Supabase auth
-        // Supabase client will automatically handle the token exchange
-        // Just redirect the user to the dashboard
+        // Check if this is a password reset callback
+        if (type === 'recovery') {
+          // Don't redirect - we need to let the user set their new password
+          // We'll handle this in a dedicated reset password page
+          return;
+        }
+        
+        // For other auth callbacks (verification, magic link),
+        // redirect to dashboard
         router.push('/dashboard')
       }
     }
