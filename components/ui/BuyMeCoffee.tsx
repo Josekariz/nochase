@@ -13,6 +13,7 @@ export default function BuyMeCoffee() {
     >
       <motion.a
         href="https://buymeacoffee.com/nochase"
+        target='_blank'
         className="bg-black/80 text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 text-sm font-medium hover:bg-black transition-colors"
         whileHover={{ scale: 1.1 }}
         animate={{ scale: [1, 1.05, 1] }}
