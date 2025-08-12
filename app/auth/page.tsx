@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Mail, Lock, User, Heart } from 'lucide-react'
+import { ArrowLeft, Mail, Lock, User, Heart, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { signIn, signUp } from '../../lib/auth'
@@ -15,6 +15,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [verificationSent, setVerificationSent] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +30,9 @@ export default function AuthPage() {
 
       if (error) {
         setError(error.message)
+      } else if (isSignUp) {
+        setVerificationSent(true)
+        // Don't redirect yet - wait for email verification
       } else {
         router.push('/dashboard')
       }
@@ -37,6 +41,49 @@ export default function AuthPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // If verification email was sent, show a different UI
+  if (verificationSent) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-center"
+          >
+            <Card variant="default" className="p-8">
+              <CheckCircle size={64} className="mx-auto mb-4 text-green-500" />
+              <h1 className="text-2xl font-bold mb-4">Check Your Email</h1>
+              <p className="text-gray-600 mb-6">
+                We've sent a verification link to <strong>{email}</strong>. 
+                Please check your inbox and click the link to verify your account.
+              </p>
+              <p className="text-sm text-gray-500 mb-6">
+                Don't see it? Check your spam folder or try again in a few minutes.
+              </p>
+              <div className="flex flex-col space-y-3">
+                <Button 
+                  variant="secondary" 
+                  onClick={() => setVerificationSent(false)}
+                  className="w-full"
+                >
+                  Back to Sign In
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.location.reload()}
+                  className="w-full"
+                >
+                  I've Verified My Email
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
+    )
   }
 
   return (
