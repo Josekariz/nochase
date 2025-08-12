@@ -69,13 +69,13 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
-          
+
           {!isLoading && (
             user ? (
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <UserIcon size={16} />
-                  {user.email}
+                  {user.email?.split("@")[0] ?? 'User'} {/* shows only before @ */}
                 </div>
                 <Button variant="outline" size="sm" onClick={handleSignOut}>
                   <LogOut size={16} />
@@ -90,6 +90,7 @@ export default function Navbar() {
               </div>
             )
           )}
+
         </div>
 
         {/* Mobile Menu Button */}
@@ -119,13 +120,13 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            
+
             {!isLoading && (
               user ? (
                 <div className="flex flex-col gap-3 pt-3 border-t border-gray-200">
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <UserIcon size={16} />
-                    {user.email}
+                    {user.email ?? 'User'}
                   </div>
                   <Button variant="outline" size="sm" onClick={handleSignOut}>
                     <LogOut size={16} />
