@@ -45,13 +45,17 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 3, repeat: Infinity }}
-              className="text-6xl mb-6"
-            >
-              💙
-            </motion.div>
+            {/* Fixed height container to prevent layout shifts */}
+            <div className="h-24 flex items-center justify-center">
+              <motion.div
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-6xl"
+                style={{ willChange: 'transform', transform: 'translateZ(0)' }}
+              >
+                💙
+              </motion.div>
+            </div>
             <h1 className="text-4xl font-bold gradient-text mb-6">
               About No Chase
             </h1>
