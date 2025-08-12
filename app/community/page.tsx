@@ -6,6 +6,7 @@ import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import Navbar from '../../components/Navbar'
 import BuyMeCoffee from '../../components/ui/BuyMeCoffee'
+import Link from 'next/link'
 
 export default function CommunityPage() {
   const upcomingFeatures = [
@@ -71,13 +72,16 @@ export default function CommunityPage() {
             <Card variant="default" className="text-center py-10 px-6">
               <h2 className="text-2xl font-bold mb-4">Community Features Coming Soon</h2>
               <p className="text-gray-600 mb-6">
-                We're building a supportive space for your healing journey. 
+                We're building a supportive space for your healing journey.
                 Join our waitlist to be the first to know when these features launch.
               </p>
-              <Button variant="primary" size="lg">
-                Join Waitlist
+              <Button variant="primary" size="lg" className="mx-auto">
+                <Link href={"https://forms.gle/m198ky8Cn9kARy7L7"} target='_blank'>
+                  Join Waitlist
+                </Link>
               </Button>
             </Card>
+
           </motion.div>
 
           {/* Upcoming Features */}
