@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Mail, Lock, User, Heart, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
@@ -9,19 +9,11 @@ import { signIn, signUp, resetPassword } from '../../lib/auth'
 import Button from '../../components/ui/Button'
 import Card from '../../components/ui/Card'
 
-export default function AuthPage() {
-  const [isSignUp, setIsSignUp] = useState(false)
-  const [isForgotPassword, setIsForgotPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [verificationSent, setVerificationSent] = useState(false)
-  const [resetLinkSent, setResetLinkSent] = useState(false)
-  const router = useRouter()
+// Client component to handle auth params
+function AuthCallback({ onRedirect }: { onRedirect: () => void }) {
   const searchParams = useSearchParams()
-
-  // Handle Supabase auth callback when component mounts
+  const router = useRouter()
+  
   useEffect(() => {
     const handleAuthCallback = async () => {
       // Check if this is a Supabase auth callback
@@ -33,18 +25,36 @@ export default function AuthPage() {
         // Check if this is a password reset callback
         if (type === 'recovery') {
           // Don't redirect - we need to let the user set their new password
-          // We'll handle this in a dedicated reset password page
           return;
         }
         
         // For other auth callbacks (verification, magic link),
         // redirect to dashboard
         router.push('/dashboard')
+        onRedirect()
       }
     }
 
     handleAuthCallback()
-  }, [searchParams, router])
+  }, [searchParams, router, onRedirect])
+  
+  return null
+}
+
+export default function AuthPage() {
+  const [isSignUp, setIsSignUp] = useState(false)
+  const [isForgotPassword, setIsForgotPassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [verificationSent, setVerificationSent] = useState(false)
+  const [resetLinkSent, setResetLinkSent] = useState(false)
+  const router = useRouter()
+
+  const handleRedirect = () => {
+    // Handle any state updates needed after redirect
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -86,6 +96,9 @@ export default function AuthPage() {
   if (resetLinkSent) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+        <Suspense fallback={null}>
+          <AuthCallback onRedirect={handleRedirect} />
+        </Suspense>
         <div className="max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -125,6 +138,9 @@ export default function AuthPage() {
   if (verificationSent) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+        <Suspense fallback={null}>
+          <AuthCallback onRedirect={handleRedirect} />
+        </Suspense>
         <div className="max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -168,6 +184,9 @@ export default function AuthPage() {
   if (isForgotPassword) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+        <Suspense fallback={null}>
+          <AuthCallback onRedirect={handleRedirect} />
+        </Suspense>
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -254,6 +273,9 @@ export default function AuthPage() {
   // Main sign in/sign up form
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+      <Suspense fallback={null}>
+        <AuthCallback onRedirect={handleRedirect} />
+      </Suspense>
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="mb-8">

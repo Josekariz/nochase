@@ -1,12 +1,32 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, Suspense } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { Lock, CheckCircle } from 'lucide-react'
+import { Lock, CheckCircle, ArrowLeft } from 'lucide-react'
 import { createClient } from '../../../lib/supabase'
 import Button from '../../../components/ui/Button'
 import Card from '../../../components/ui/Card'
+import Link from 'next/link'
+
+// Separate component that uses searchParams
+function AuthParamsHandler() {
+  const router = useRouter()
+  
+  // This will be properly handled by Next.js since the component will only be 
+  // rendered on the client side within a Suspense boundary
+  const handleUpdatePassword = async (password: string) => {
+    try {
+      const supabase = createClient()
+      return await supabase.auth.updateUser({ password })
+    } catch (err) {
+      console.error('Error updating password:', err)
+      return { error: { message: 'Failed to update password' } }
+    }
+  }
+  
+  return { handleUpdatePassword }
+}
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('')
@@ -15,7 +35,6 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,25 +49,40 @@ export default function ResetPasswordPage() {
     }
 
     try {
-      const supabase = createClient()
-      
-      // Update the user's password
-      const { error } = await supabase.auth.updateUser({
-        password
-      })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        setSuccess(true)
-        // Redirect to dashboard after 2 seconds
-        setTimeout(() => {
-          router.push('/dashboard')
-        }, 2000)
+      // This component will be lazily loaded within the Suspense boundary
+      const AuthParams = () => {
+        const { handleUpdatePassword } = AuthParamsHandler()
+        
+        useEffect(() => {
+          const updatePassword = async () => {
+            const { error } = await handleUpdatePassword(password)
+            
+            if (error) {
+              setError(error.message)
+            } else {
+              setSuccess(true)
+              // Redirect to dashboard after 2 seconds
+              setTimeout(() => {
+                router.push('/dashboard')
+              }, 2000)
+            }
+            setIsLoading(false)
+          }
+          
+          updatePassword()
+        }, [])
+        
+        return null
       }
+      
+      // Render the component that uses searchParams
+      return (
+        <Suspense fallback={null}>
+          <AuthParams />
+        </Suspense>
+      )
     } catch (err) {
       setError('Something went wrong. Please try again.')
-    } finally {
       setIsLoading(false)
     }
   }
@@ -78,18 +112,27 @@ export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
       <div className="max-w-md mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <h1 className="text-3xl font-bold gradient-text mb-2">
-            Reset Your Password
-          </h1>
-          <p className="text-gray-600">
-            Please enter your new password below
-          </p>
-        </motion.div>
+        <div className="mb-8">
+          <Link href="/auth">
+            <Button variant="ghost" className="mb-6">
+              <ArrowLeft size={20} />
+              Back to Sign In
+            </Button>
+          </Link>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <h1 className="text-3xl font-bold gradient-text mb-2">
+              Reset Your Password
+            </h1>
+            <p className="text-gray-600">
+              Please enter your new password below
+            </p>
+          </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
