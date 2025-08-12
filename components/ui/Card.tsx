@@ -32,7 +32,7 @@ export default function Card({
       whileHover={hover ? { y: -5, scale: 1.02 } : {}}
       className={`
         ${variantClasses[variant]} 
-        m-4
+        
         max-w-[95%]
         backdrop-blur-sm 
         border border-white/20 
