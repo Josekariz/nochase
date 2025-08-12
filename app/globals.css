@@ -1,19 +1,176 @@
-/* app/globals.css */
-
 @import "tailwindcss";
 
 @theme {
-  --color-brand-primary: #1A73E8;
-  --color-brand-accent: #E84545;
-
-  /* New custom colors for card backgrounds */
-  --color-card-blue: #EBF5F9;
-  --color-card-purple: #F3F1FA;
-  --color-card-pink: #F8E8F5;
-
+  /* Brand Colors - Playful and Soothing */
+  --color-brand-primary: #6366f1;
+  --color-brand-accent: #f59e0b;
+  --color-brand-soft: #a78bfa;
+  
+  /* Card Colors - Soft Pastels */
+  --color-card-blue: #dbeafe;
+  --color-card-purple: #f3e8ff;
+  --color-card-pink: #fce7f3;
+  --color-card-mint: #d1fae5;
+  
+  /* Water Animation Colors */
+  --color-water-light: #bfdbfe;
+  --color-water-medium: #3b82f6;
+  --color-water-dark: #1e40af;
+  
+  /* Spacing and Layout */
   --spacing-section: 4rem;
-  --border-radius-card: 0.75rem;
+  --border-radius-card: 1rem;
+  --border-radius-button: 0.75rem;
   --max-width-page: 72rem;
+  
+  /* Custom Animations */
+  --animate-float: float 3s ease-in-out infinite;
+  --animate-gentle-bounce: gentle-bounce 2s ease-in-out infinite;
+  --animate-water-flow: water-flow 4s ease-in-out infinite;
+  --animate-heartbeat: heartbeat 1.5s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.6s ease-out;
 }
 
-/* Any other global styles */
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  min-height: 100vh;
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes water-flow {
+  0%, 100% { transform: translateX(0px) scaleX(1); }
+  50% { transform: translateX(5px) scaleX(1.02); }
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0px); }
+}
+
+/* Water Fill Animation */
+@keyframes water-fill {
+  0% { height: 0%; }
+  100% { height: var(--fill-height, 50%); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Custom Classes */
+.animate-float {
+  animation: var(--animate-float);
+}
+
+.animate-gentle-bounce {
+  animation: var(--animate-gentle-bounce);
+}
+
+.animate-water-flow {
+  animation: var(--animate-water-flow);
+}
+
+.animate-heartbeat {
+  animation: var(--animate-heartbeat);
+}
+
+.animate-fade-in {
+  animation: var(--animate-fade-in);
+}
+
+.animate-slide-up {
+  animation: var(--animate-slide-up);
+}
+
+.water-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-card);
+}
+
+.water-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-water-light) 0%,
+    var(--color-water-medium) 50%,
+    var(--color-water-dark) 100%
+  );
+  animation: water-fill 2s ease-out forwards;
+  transition: height 0.5s ease-out;
+}
+
+.water-ripple {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: rgba(59, 130, 246, 0.3);
+  border-radius: 50%;
+  animation: ripple 2s ease-out infinite;
+}
+
+/* Breathing Animation */
+.breath-circle {
+  transition: transform 0.3s ease-out;
+}
+
+.breath-circle.inhale {
+  transform: scale(1.3);
+}
+
+.breath-circle.exhale {
+  transform: scale(0.7);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glassmorphism Effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
