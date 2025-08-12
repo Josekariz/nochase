@@ -9,23 +9,36 @@ import Button from '../../../components/ui/Button'
 import Card from '../../../components/ui/Card'
 import Link from 'next/link'
 
-// Separate component that uses searchParams
-function AuthParamsHandler() {
-  const router = useRouter()
-  
-  // This will be properly handled by Next.js since the component will only be 
-  // rendered on the client side within a Suspense boundary
-  const handleUpdatePassword = async (password: string) => {
-    try {
-      const supabase = createClient()
-      return await supabase.auth.updateUser({ password })
-    } catch (err) {
-      console.error('Error updating password:', err)
-      return { error: { message: 'Failed to update password' } }
+// Client component that gets rendered inside Suspense
+function PasswordUpdater({ 
+  password, 
+  onSuccess, 
+  onError 
+}: { 
+  password: string, 
+  onSuccess: () => void, 
+  onError: (message: string) => void 
+}) {
+  useEffect(() => {
+    const updatePassword = async () => {
+      try {
+        const supabase = createClient()
+        const { error } = await supabase.auth.updateUser({ password })
+        
+        if (error) {
+          onError(error.message)
+        } else {
+          onSuccess()
+        }
+      } catch (err) {
+        onError('Failed to update password')
+      }
     }
-  }
+    
+    updatePassword()
+  }, [password, onSuccess, onError])
   
-  return { handleUpdatePassword }
+  return null
 }
 
 export default function ResetPasswordPage() {
@@ -34,9 +47,10 @@ export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
@@ -48,43 +62,23 @@ export default function ResetPasswordPage() {
       return
     }
 
-    try {
-      // This component will be lazily loaded within the Suspense boundary
-      const AuthParams = () => {
-        const { handleUpdatePassword } = AuthParamsHandler()
-        
-        useEffect(() => {
-          const updatePassword = async () => {
-            const { error } = await handleUpdatePassword(password)
-            
-            if (error) {
-              setError(error.message)
-            } else {
-              setSuccess(true)
-              // Redirect to dashboard after 2 seconds
-              setTimeout(() => {
-                router.push('/dashboard')
-              }, 2000)
-            }
-            setIsLoading(false)
-          }
-          
-          updatePassword()
-        }, [])
-        
-        return null
-      }
-      
-      // Render the component that uses searchParams
-      return (
-        <Suspense fallback={null}>
-          <AuthParams />
-        </Suspense>
-      )
-    } catch (err) {
-      setError('Something went wrong. Please try again.')
-      setIsLoading(false)
-    }
+    // Set flag to start updating password
+    setIsUpdating(true)
+  }
+
+  const handleSuccess = () => {
+    setSuccess(true)
+    setIsLoading(false)
+    // Redirect to dashboard after 2 seconds
+    setTimeout(() => {
+      router.push('/dashboard')
+    }, 2000)
+  }
+
+  const handleError = (message: string) => {
+    setError(message)
+    setIsLoading(false)
+    setIsUpdating(false)
   }
 
   if (success) {
@@ -111,6 +105,17 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 px-4 py-8">
+      {/* Only render the password updater when we're ready to update */}
+      {isUpdating && (
+        <Suspense fallback={null}>
+          <PasswordUpdater 
+            password={password} 
+            onSuccess={handleSuccess} 
+            onError={handleError}
+          />
+        </Suspense>
+      )}
+      
       <div className="max-w-md mx-auto">
         <div className="mb-8">
           <Link href="/auth">
