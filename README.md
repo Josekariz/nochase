@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Got it ✅
+Here’s the updated **README.md** with your mission statement included.
 
-## Getting Started
+---
 
-First, run the development server:
+# NoChase 💙
+
+**NoChase** is a personal mental wellness app designed for anyone struggling with **anxious attachment**, offering tools and resources to help you manage emotional triggers, break unhealthy cycles, and nurture self-worth.
+It’s **always online**, ensuring your data is backed up instantly and accessible across all your devices.
+
+## 🌍 Mission Statement
+
+We believe that healing starts with awareness, compassion, and the right support.
+**NoChase** exists to empower individuals with anxious attachment by providing resources, daily guidance, and progress tracking — helping you build healthier connections, stronger boundaries, and a kinder relationship with yourself.
+
+## ✨ Features
+
+* **Daily Affirmations** – Motivational, healing prompts delivered directly to you each day.
+* **Progress Tracking** – Log how you’re feeling and watch your emotional growth over time.
+* **Instant Sync** – All changes are saved securely to the cloud in real time.
+* **Beautiful Visuals** – Soft gradients and meaningful icons to brighten your mood.
+
+## 🌐 Why Always Online?
+
+* Your progress is never lost — even if you switch devices or uninstall the app.
+* Secure storage ensures your history and affirmations are always available.
+* Updates and new features roll out seamlessly without manual downloads.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* **Node.js** (v18+ recommended)
+* **npm** or **yarn**
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/nochase.git
+
+# Navigate to the folder
+cd nochase
+
+# Install dependencies
+npm install
+```
+
+### Running the App
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open:
+`http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📂 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+.
+├── components/    # Reusable UI components
+├── data/          # API integration and data fetching
+├── pages/         # Next.js pages
+├── public/        # Static assets
+└── styles/        # Global and component-specific styles
+```
 
-## Learn More
+## 🔒 Privacy & Safety
 
-To learn more about Next.js, take a look at the following resources:
+* All data is stored securely in the cloud.
+* Encrypted transmission ensures your personal records are safe.
+* You control your account and can delete your data at any time.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📜 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the **MIT License**.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
