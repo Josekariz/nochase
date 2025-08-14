@@ -1,7 +1,4 @@
-Got it ✅
-Here’s the updated **README.md** with your mission statement included.
 
----
 
 # NoChase 💙
 
