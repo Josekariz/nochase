@@ -1,0 +1,14 @@
+name: Hello Dev Branch
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "Hello! Someone just pushed code to dev branch!"
+      - name: Check what time it is
+        run: date
