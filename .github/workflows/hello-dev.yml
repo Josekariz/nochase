@@ -9,6 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Say hello
-        run: echo "Hello! Someone just pushed code to dev branch!"
+        run: echo "test vercel deploy"
       - name: Check what time it is
         run: date
